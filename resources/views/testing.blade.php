@@ -19,7 +19,7 @@
 </head>
 
 <body class="antialiased">
-    <h2 class="font-bold text-4xl">HELOO RENN</h2>
+    <h2 class="font-bold text-4xl">HELOO RENN</h2>  
 </body>
 
 </html>
