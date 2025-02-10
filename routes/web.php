@@ -15,6 +15,9 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    Route::get('/home', [AdminController::class, 'index'])->name('home');
 });
 
-Route::get('/home', [AdminController::class, 'index']);
+Route::get('/test', function () {
+    return view('testing');
+})->name('testing');

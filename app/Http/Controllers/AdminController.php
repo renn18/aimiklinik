@@ -17,7 +17,7 @@ class AdminController extends Controller
             } elseif ($role == 'admin') {
                 return view('admin.index');
             } else {
-                return redirect()->back();
+                return redirect()->route('login');
             }
         }
     }
