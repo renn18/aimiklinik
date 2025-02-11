@@ -66,4 +66,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function obats()
+    {
+        return $this->hasMany(\App\Models\Obat::class);
+    }
 }
