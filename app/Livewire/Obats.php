@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Models\Obat;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Livewire\Attributes\Url;
 use Illuminate\Support\Facades\Auth;
 
 class Obats extends Component
@@ -23,6 +22,7 @@ class Obats extends Component
     public $nama, $harga;
     public $status = false;
 
+    // Init boolean untuk trigger modal
     public $confirmingObatDeletion = false;
     public $confirmingObatAdd = false;
 
@@ -39,21 +39,22 @@ class Obats extends Component
 
     public function updatingSearch()
     {
-        $this->resetPage(); // Reset pagination ketika search berubah
+        // Reset pagination ketika search berubah
+        $this->resetPage();
     }
 
     public function render()
     {
-        $obats = Obat::where('user_id', auth()->id())
+        $obats = Obat::where('user_id', Auth::user()->id)
             ->when(
                 $this->search,
                 fn($query) =>
-                $query->where('nama', 'like', '%' . $this->search . '%') // Pencarian
+                $query->where('nama', 'like', '%' . $this->search . '%')
             )
             ->when(
                 $this->active,
                 fn($query) =>
-                $query->where('status', 1) // Filter aktif
+                $query->where('status', 1)
             )
             ->paginate(10);
 

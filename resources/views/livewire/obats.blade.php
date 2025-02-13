@@ -7,6 +7,8 @@
     @endif
 
     <div class="text-2xl">List Obat</div>
+    <!-- Validasi Role -->
+    @if (auth()->user()->isAdmin())
     <div class="mt-8 text-2xl flex justify-center">
         <div class="mr-3">
             <x-button wire:click="confirmObatAdd">
@@ -14,70 +16,74 @@
             </x-button>
         </div>
     </div>
+    @endif
 
     <div class="mt-6">
-        <div class="flex justify-between mr-2 mb-5">
+        <div class="flex flex-col sm:flex-row gap-4 justify-between mr-2 mb-5">
             <input type="text" wire:model.live="search" class="rounded-md" placeholder="Cari ...">
             <button wire:click="toggleActive"
                 class="btn bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
                 {{ $active ? 'Semua' : 'Tersedia' }}
             </button>
         </div>
-        <table class="table-auto w-full">
-            <thead>
-                <tr>
-                    <th class="px-4 py-2">
-                        <div class="flex items-center">ID</div>
-                    </th>
-                    <th class="px-4 py-2">
-                        <div class="flex items-center">Nama Obat</div>
-                    </th>
-                    <th class="px-4 py-2">
-                        <div class="flex items-center">Harga</div>
-                    </th>
-                    <th class="px-4 py-2">
-                        Status
-                    </th>
-                    <th class="py-2">
-                        Aksi
-                    </th>
-                </tr>
-            </thead>
+        <div class="overflow-x-auto">
 
-            <tbody>
-                @foreach($obats as $obat)
-                <tr>
-                    <td class="border px-4 py-2">{{ $obat->id }}</td>
-                    <td wire:key="{{ $obat->id }}" class="border px-4 py-2">{{ $obat->nama }}</td>
-                    <td class="border px-4 py-2">Rp. {{ number_format($obat->harga, 0) }}</td>
-                    <td class="border px-4 py-2">{{ $obat->status ? 'Tersedia' :
-                        'Tidak Tersedia'
-                        }}</td>
+            <table class="table-auto w-full over">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2">
+                            <div class="flex items-center">ID</div>
+                        </th>
+                        <th class="px-4 py-2">
+                            <div class="flex items-center">Nama Obat</div>
+                        </th>
+                        <th class="px-4 py-2">
+                            <div class="flex items-center">Harga</div>
+                        </th>
+                        <th class="px-4 py-2">
+                            Status
+                        </th>
+                        <th class="py-2">
+                            Aksi
+                        </th>
+                    </tr>
+                </thead>
 
-                    <!-- Validasi Role -->
-                    @if (auth()->user()->isAdmin())
-                    <td class="border py-2 flex justify-center gap-3">
-                        <x-secondary-button wire:click="confirmObatEdit( {{ $obat->id }} )"
-                            wire:loading.attr="disabled">
-                            {{ __('Edit') }}
-                        </x-secondary-button>
-                        <x-danger-button wire:click="confirmObatDeletion( {{ $obat->id }} )"
-                            wire:loading.attr="disabled">
-                            {{ __('Hapus') }}
-                        </x-danger-button>
-                    </td>
-                    @else
-                    <td class="border py-2 flex justify-center gap-3">
-                        <x-secondary-button wire:click="confirmObatDeletion( {{ $obat->id }} )"
-                            wire:loading.attr="disabled" class="bg-blue-500 hover:bg-blue-700 text-white">
-                            {{ __('Order') }}
-                        </x-secondary-button>
-                    </td>
-                    @endif
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+                <tbody>
+                    @foreach($obats as $obat)
+                    <tr>
+                        <td class="border px-4 py-2">{{ $obat->id }}</td>
+                        <td wire:key="{{ $obat->id }}" class="border px-4 py-2">{{ $obat->nama }}</td>
+                        <td class="border px-4 py-2">Rp. {{ number_format($obat->harga, 0) }}</td>
+                        <td class="border px-4 py-2">{{ $obat->status ? 'Tersedia' :
+                            'Tidak Tersedia'
+                            }}</td>
+
+                        <!-- Validasi Role -->
+                        @if (auth()->user()->isAdmin())
+                        <td class="border py-2 flex justify-center gap-3">
+                            <x-secondary-button wire:click="confirmObatEdit( {{ $obat->id }} )"
+                                wire:loading.attr="disabled">
+                                {{ __('Edit') }}
+                            </x-secondary-button>
+                            <x-danger-button wire:click="confirmObatDeletion( {{ $obat->id }} )"
+                                wire:loading.attr="disabled">
+                                {{ __('Hapus') }}
+                            </x-danger-button>
+                        </td>
+                        @else
+                        <td class="border py-2 flex justify-center gap-3">
+                            <x-secondary-button wire:click="confirmObatDeletion( {{ $obat->id }} )"
+                                wire:loading.attr="disabled" class="bg-blue-500 hover:bg-blue-700 text-white">
+                                {{ __('Order') }}
+                            </x-secondary-button>
+                        </td>
+                        @endif
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="mt-5">
         {{$obats->links()}}
