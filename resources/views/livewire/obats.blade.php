@@ -57,7 +57,7 @@
                     <!-- Validasi Role -->
                     @if (auth()->user()->isAdmin())
                     <td class="border py-2 flex justify-center gap-3">
-                        <x-secondary-button wire:click="confirmObatDeletion( {{ $obat->id }} )"
+                        <x-secondary-button wire:click="confirmObatEdit( {{ $obat->id }} )"
                             wire:loading.attr="disabled">
                             {{ __('Edit') }}
                         </x-secondary-button>
@@ -106,27 +106,27 @@
     </x-dialog-modal>
 
     <!-- Add Obat Confirmation Modal -->
-    <x-dialog-modal wire:model.live="confirmingObatAdd">
+    <x-dialog-modal wire:model="confirmingObatAdd">
         <x-slot name="title">
-            {{ __('Tambahkan Obat') }}
+            {{ isset($this->obat->id) ? 'Edit Obat' : 'Tambah Obat'}}
         </x-slot>
 
         <x-slot name="content">
             <div class="col-span-6 sm:col-span-4">
-                <label>Nama Obat:</label>
-                <input type="text" wire:model="nama" class="mt-1 block w-full">
+                <x-label for="nama" value="Nama Obat" />
+                <x-input id="nama" type="text" wire:model.defer="nama" class="block mt-1 w-full" required />
                 @error('nama') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
 
             <div class="col-span-6 sm:col-span-4 mt-4">
-                <label>Harga:</label>
-                <input type="text" wire:model="harga" class="mt-1 block w-full">
+                <x-label for="harga" value="Harga Obat" />
+                <x-input id="harga" type="text" wire:model="harga" class="block mt-1 w-full" required />
                 @error('harga') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
 
             <div class="col-span-6 sm:col-span-4 mt-4">
                 <label for="" class="flex items-center">
-                    <input type="checkbox" wire:model="status" class="form-checkbox" />
+                    <input type="checkbox" wire:model.defer="status" class="form-checkbox" />
                     <span class="ml-2 text-sm text-gray-600">Tersedia</span>
                 </label>
             </div>

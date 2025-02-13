@@ -65,6 +65,17 @@ class Obats extends Component
         $this->confirmingObatDeletion = $id;
     }
 
+    public function confirmObatEdit($id)
+    {
+        $obat = Obat::findOrFail($id);
+
+        $this->obat = $obat;
+        $this->nama = $obat->nama;
+        $this->harga = $obat->harga;
+        $this->status = $obat->status;
+        $this->confirmingObatAdd = true;
+    }
+
     public function deleteObat(Obat $obat)
     {
         $obat->delete();
@@ -81,14 +92,22 @@ class Obats extends Component
     {
         $this->validate();
 
-        Obat::create([
-            'user_id' => Auth::id(),
-            'nama' => $this->nama,
-            'harga' => $this->harga,
-            'status' => $this->status ? 1 : 0
-        ]);
-
-        session()->flash('message', 'Obat berhasil ditambahkan.');
+        if ($this->obat) {
+            $this->obat->update([
+                'nama' => $this->nama,
+                'harga' => $this->harga,
+                'status' => $this->status ? 1 : 0
+            ]);
+            session()->flash('message', 'Obat berhasil diubah.');
+        } else {
+            Obat::create([
+                'user_id' => Auth::id(),
+                'nama' => $this->nama,
+                'harga' => $this->harga,
+                'status' => $this->status ? 1 : 0
+            ]);
+            session()->flash('message', 'Obat berhasil ditambahkan.');
+        }
 
         $this->confirmingObatAdd = false;
 
