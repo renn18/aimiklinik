@@ -6,6 +6,7 @@ use App\Models\Obat;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
+use Illuminate\Support\Facades\Auth;
 
 class Obats extends Component
 {
@@ -18,13 +19,17 @@ class Obats extends Component
 
     public $obat;
 
+    // Form variable
+    public $nama, $harga;
+    public $status = false;
+
     public $confirmingObatDeletion = false;
     public $confirmingObatAdd = false;
 
     protected $rules = [
-        'obat.nama' => 'required|string|min:4',
-        'obat.harga' => 'required|numeric|between:1000,1000000',
-        'obat.status' => 'boolean'
+        'nama' => 'required|string|min:4',
+        'harga' => 'required|numeric|between:1000,1000000',
+        'status' => 'boolean'
     ];
 
     public function toggleActive()
@@ -68,6 +73,25 @@ class Obats extends Component
 
     public function confirmObatAdd()
     {
+        $this->reset(['obat']);
         $this->confirmingObatAdd = true;
+    }
+
+    public function saveObat()
+    {
+        $this->validate();
+
+        Obat::create([
+            'user_id' => Auth::id(),
+            'nama' => $this->nama,
+            'harga' => $this->harga,
+            'status' => $this->status ? 1 : 0
+        ]);
+
+        session()->flash('message', 'Obat berhasil ditambahkan.');
+
+        $this->confirmingObatAdd = false;
+
+        $this->reset(['nama', 'harga', 'status']);
     }
 }

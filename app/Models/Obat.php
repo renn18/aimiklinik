@@ -9,7 +9,7 @@ class Obat extends Model
 {
     /** @use HasFactory<\Database\Factories\ObatFactory> */
     use HasFactory;
-    protected $fillable = ['nama', 'harga', 'status'];
+    protected $fillable = ['user_id', 'nama', 'harga', 'status'];
 
     public function index()
     {
