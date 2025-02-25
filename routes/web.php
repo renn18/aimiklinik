@@ -20,6 +20,9 @@ Route::middleware([
     Route::get('/list-obat', function () {
         return view('obat.index');
     })->name('list-obat');
+    Route::get('/list-pasien', function () {
+        return view('pasien.index');
+    })->name('list-pasien');
 });
 
 // Route::middleware(['auth-sanctum', config('jetstream.auth_session'), 'verified'])->get('/list-obat', function () {
